@@ -1,0 +1,27 @@
+# Maven
+target/
+
+# Environment & secrets
+.env
+.env.*
+application-*.yml
+application-*.properties
+
+# Logs
+*.log
+logs/
+
+# IDEs
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings
+.factorypath
+
+# OS
+.DS_Store
+Thumbs.db
