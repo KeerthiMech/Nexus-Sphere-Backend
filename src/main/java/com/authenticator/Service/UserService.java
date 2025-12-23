@@ -65,7 +65,7 @@ public class UserService {
                     .orElseThrow(() -> new RuntimeException("Invalid email or userid"));
         } else {
             // userId login
-            users = userRepository.findByUserId(identifier)
+            users = userRepository.findByUsername(identifier)
                     .orElseThrow(() -> new RuntimeException("Invalid email or userid"));
         }
         if (!passwordEncoder.matches(password, users.getPassword())) {
