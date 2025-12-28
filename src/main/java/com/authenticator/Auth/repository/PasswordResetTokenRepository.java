@@ -1,6 +1,6 @@
-package com.authenticator.repository;
+package com.authenticator.Auth.repository;
 
-import com.authenticator.Model.PasswordResetToken;
+import com.authenticator.Auth.Model.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

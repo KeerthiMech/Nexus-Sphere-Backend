@@ -1,4 +1,4 @@
-package com.authenticator.Model;
+package com.authenticator.Auth.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,20 +7,22 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "password_reset_token")
+@Table(name = "password_reset_token", schema = "Auth_Cred")
 public class PasswordResetToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name ="id")
+    private String id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name="token",unique = true, nullable = false)
     private String token;
 
     @Column(unique = true, nullable = false)
     private LocalDateTime expiryTime;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "userId", nullable = false, unique = true)
     private Users users;
 

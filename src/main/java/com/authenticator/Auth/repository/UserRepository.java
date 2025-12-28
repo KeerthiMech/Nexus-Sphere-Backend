@@ -1,6 +1,6 @@
-package com.authenticator.repository;
+package com.authenticator.Auth.repository;
 
-import com.authenticator.Model.Users;
+import com.authenticator.Auth.Model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

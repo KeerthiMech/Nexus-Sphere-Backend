@@ -1,4 +1,4 @@
-package com.authenticator.Service;
+package com.authenticator.Auth.Service;
 
 
 import jakarta.mail.MessagingException;
