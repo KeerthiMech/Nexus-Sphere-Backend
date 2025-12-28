@@ -1,8 +1,8 @@
-package com.authenticator.Controller;
+package com.authenticator.Auth.Controller;
 
-import com.authenticator.Service.PasswordResetService;
-import com.authenticator.Service.UserService;
-import com.authenticator.dto.*;
+import com.authenticator.Auth.Service.PasswordResetService;
+import com.authenticator.Auth.Service.AuthService;
+import com.authenticator.Auth.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +15,19 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final PasswordResetService passwordResetService;
 
 
     @PostMapping("/signup")
     public ResponseEntity<?> Signup(@RequestBody SignupRequest signupRequest){
-        String result = userService.signup(signupRequest);
+        String result = authService.signup(signupRequest);
         return ResponseEntity.ok(Map.of("message", result));
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(userService.login(loginRequest));
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @PostMapping("forgot-password")

@@ -1,12 +1,11 @@
-package com.authenticator.Service;
+package com.authenticator.Auth.Service;
 
-import com.authenticator.Model.PasswordResetToken;
-import com.authenticator.Model.Users;
-import com.authenticator.dto.LoginRequest;
-import com.authenticator.dto.LoginResponse;
-import com.authenticator.dto.SignupRequest;
-import com.authenticator.repository.PasswordResetTokenRepository;
-import com.authenticator.repository.UserRepository;
+import com.authenticator.Auth.Model.Users;
+import com.authenticator.Auth.dto.LoginRequest;
+import com.authenticator.Auth.dto.LoginResponse;
+import com.authenticator.Auth.dto.SignupRequest;
+import com.authenticator.Auth.repository.PasswordResetTokenRepository;
+import com.authenticator.Auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +18,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class AuthService {
     // make repository final so Lombok @RequiredArgsConstructor will inject it
     private final UserRepository userRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;

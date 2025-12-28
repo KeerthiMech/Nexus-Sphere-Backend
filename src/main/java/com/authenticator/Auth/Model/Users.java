@@ -1,4 +1,4 @@
-package com.authenticator.Model;
+package com.authenticator.Auth.Model;
 
 
 import jakarta.persistence.*;
@@ -7,20 +7,21 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name ="users", schema = "Auth_Cred")
 @Data
 public class Users {
 
     @Id
+    @Column(name ="userId")
     private String userId;
 
-    @Column(unique = true, nullable = false)
+    @Column(name ="username", unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name ="password", nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email" ,unique = true, nullable = false)
     private String email;
 
     private LocalDateTime createdAt;

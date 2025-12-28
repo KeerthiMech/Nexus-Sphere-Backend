@@ -1,10 +1,10 @@
-package com.authenticator.Service;
+package com.authenticator.Auth.Service;
 
 
-import com.authenticator.Model.PasswordResetToken;
-import com.authenticator.Model.Users;
-import com.authenticator.repository.PasswordResetTokenRepository;
-import com.authenticator.repository.UserRepository;
+import com.authenticator.Auth.Model.PasswordResetToken;
+import com.authenticator.Auth.Model.Users;
+import com.authenticator.Auth.repository.PasswordResetTokenRepository;
+import com.authenticator.Auth.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

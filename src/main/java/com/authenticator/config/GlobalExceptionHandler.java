@@ -1,6 +1,6 @@
-package com.authenticator.Controller;
+package com.authenticator.config;
 
-import com.authenticator.dto.ApiError;
+import com.authenticator.config.dto.ApiError;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
