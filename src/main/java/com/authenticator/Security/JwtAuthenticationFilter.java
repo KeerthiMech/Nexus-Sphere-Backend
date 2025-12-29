@@ -1,4 +1,4 @@
-package com.authenticator.config;
+package com.authenticator.Security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,6 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
         try {
             String userId = jwtUtil.extractUserId(token);
+
+            CustomPrinciple customPrincipal = new CustomPrinciple(userId);
+
             UsernamePasswordAuthenticationToken authenticaton = new UsernamePasswordAuthenticationToken(
                     userId,
                     null,

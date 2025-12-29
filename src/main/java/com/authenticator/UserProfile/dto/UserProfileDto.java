@@ -10,9 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserProfileDto {
-    private Long userId;
+    private String userId;
     private String username;
     private int followersCount;
     private int followingCount;
     private int postsCount;
+    private String bio;
+    private String ProfilePictureUrl;
+    private String FullName;
 }

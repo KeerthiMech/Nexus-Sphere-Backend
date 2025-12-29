@@ -3,20 +3,24 @@ package com.authenticator.Auth.Controller;
 import com.authenticator.Auth.Service.PasswordResetService;
 import com.authenticator.Auth.Service.AuthService;
 import com.authenticator.Auth.dto.*;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
     private final PasswordResetService passwordResetService;
+
+
+    public AuthController(AuthService authService, PasswordResetService passwordResetService) {
+        this.authService = authService;
+        this.passwordResetService = passwordResetService;
+    }
 
 
     @PostMapping("/signup")

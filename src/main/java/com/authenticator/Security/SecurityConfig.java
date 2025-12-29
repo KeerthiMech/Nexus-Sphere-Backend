@@ -1,4 +1,4 @@
-package com.authenticator.config;
+package com.authenticator.Security;
 
 
 import org.springframework.context.annotation.Bean;
@@ -33,7 +33,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/user/**").permitAll()
+                        .requestMatchers("/auth/**","/user/profile/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

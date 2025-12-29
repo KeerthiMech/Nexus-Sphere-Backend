@@ -1,4 +1,4 @@
-package com.authenticator.config;
+package com.authenticator.Security;
 
 
 import io.jsonwebtoken.Jwts;
@@ -16,6 +16,7 @@ public class JwtUtil {
     public String generateToken(String userId) {
         return Jwts.builder()
                 .setSubject(userId)
+                .claim("userId", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(key)
