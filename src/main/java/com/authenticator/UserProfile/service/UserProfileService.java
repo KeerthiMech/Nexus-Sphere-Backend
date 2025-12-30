@@ -8,6 +8,7 @@ public interface UserProfileService {
      UserProfileDto getprofile(String username);
 
      String createProfile(String userid, UserProfileDto userProfileDto);
+     String updateProfile(String userid, UserProfileDto userProfileDto);
 }
 
 

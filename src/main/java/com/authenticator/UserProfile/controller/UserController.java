@@ -20,13 +20,17 @@ public class UserController {
     }
 
 
-    @PostMapping("/createProfile")
+    @PostMapping("/auth/createProfile")
     ResponseEntity<?> createUserProfile(@AuthenticationPrincipal CustomPrinciple customPrinciple, @RequestBody UserProfileDto userProfileDto){
         String userid = customPrinciple.getUserid();
         return ResponseEntity.ok(userProfileService.createProfile(userid,userProfileDto));
     }
 
-    @PostMapping
+    @PatchMapping("/auth/updateProfile")
+    ResponseEntity<?> updateUserProfile(@AuthenticationPrincipal CustomPrinciple customPrinciple, @RequestBody UserProfileDto userProfileDto) {
+        String userid = customPrinciple.getUserid();
+        return ResponseEntity.ok(userProfileService.updateProfile(userid, userProfileDto));
+    }
 
     @GetMapping("/profile/{username}")
     ResponseEntity<?> getUserProfile(@PathVariable String username){
