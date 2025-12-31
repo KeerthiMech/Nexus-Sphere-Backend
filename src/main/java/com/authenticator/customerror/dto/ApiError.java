@@ -1,4 +1,4 @@
-package com.authenticator.config.dto;
+package com.authenticator.customerror.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

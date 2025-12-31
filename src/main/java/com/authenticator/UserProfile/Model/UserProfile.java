@@ -19,14 +19,8 @@ public class UserProfile {
     @Column(name = "profileId", updatable = false, nullable = false)
     private String profileId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "userId",
-            referencedColumnName = "userId",
-            nullable = false,
-            unique = true
-    )
-    private Users users;
+    @Column(name ="userId", unique = true, nullable = false)
+    private String userId;
 
     @Column(name ="username")
     private String username;

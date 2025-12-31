@@ -1,20 +1,36 @@
 package com.authenticator.UserProfile.controller;
 
-
-import com.authenticator.Auth.Model.Users;
+import com.authenticator.Security.CustomPrinciple;
 import com.authenticator.UserProfile.dto.UserProfileDto;
 import com.authenticator.UserProfile.service.UserProfileService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserProfileService userProfileService;
+
+    // Constructor injection with @Qualifier
+    public UserController(UserProfileService userProfileService) {
+        this.userProfileService = userProfileService;
+    }
+
+
+    @PostMapping("/auth/createProfile")
+    ResponseEntity<?> createUserProfile(@AuthenticationPrincipal CustomPrinciple customPrinciple, @RequestBody UserProfileDto userProfileDto){
+        String userid = customPrinciple.getUserid();
+        return ResponseEntity.ok(userProfileService.createProfile(userid,userProfileDto));
+    }
+
+    @PatchMapping("/auth/updateProfile")
+    ResponseEntity<?> updateUserProfile(@AuthenticationPrincipal CustomPrinciple customPrinciple, @RequestBody UserProfileDto userProfileDto) {
+        String userid = customPrinciple.getUserid();
+        return ResponseEntity.ok(userProfileService.updateProfile(userid, userProfileDto));
+    }
 
     @GetMapping("/profile/{username}")
     ResponseEntity<?> getUserProfile(@PathVariable String username){

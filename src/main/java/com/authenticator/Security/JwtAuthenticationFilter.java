@@ -1,4 +1,4 @@
-package com.authenticator.config;
+package com.authenticator.Security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,8 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
         try {
             String userId = jwtUtil.extractUserId(token);
+
+            CustomPrinciple customPrincipal = new CustomPrinciple(userId);
+
             UsernamePasswordAuthenticationToken authenticaton = new UsernamePasswordAuthenticationToken(
-                    userId,
+                    customPrincipal,
                     null,
                     Collections.emptyList()
             );
@@ -44,8 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authenticaton);
         }catch (Exception e){
-            // Invalid token, proceed without setting authentication
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid or expired JWT token");
+            response.flushBuffer();
             return;
         }
         filterChain.doFilter(request, response);

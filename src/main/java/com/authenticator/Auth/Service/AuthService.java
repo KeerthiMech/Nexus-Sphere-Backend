@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.authenticator.config.JwtUtil;
+import com.authenticator.Security.JwtUtil;
 
 
 import java.time.LocalDateTime;
