@@ -1,6 +1,6 @@
 package com.authenticator.UserProfile.Model;
 
-import com.authenticator.Auth.Model.Users;
+import com.authenticator.Follow.model.Follow;
 import jakarta.persistence.*;
 import lombok.*;
 
