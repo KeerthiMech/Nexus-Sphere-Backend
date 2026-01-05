@@ -32,7 +32,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         UserProfileDto dto = new UserProfileDto();
         dto.setUsername(profile.getUsername());
         dto.setBio(profile.getBio());
-        dto.setFullName(profile.getFullName());
+        dto.setFullName(profile.getFullname());
         dto.setProfilePictureUrl(profile.getProfilePictureUrl());
 
         dto.setFollowersCount(
@@ -63,7 +63,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             userProfile.setUsername(userProfileDto.getUsername());
             userProfile.setBio(userProfileDto.getBio());
             userProfile.setProfilePictureUrl(userProfileDto.getProfilePictureUrl());
-            userProfile.setFullName(userProfileDto.getFullName());
+            userProfile.setFullname(userProfileDto.getFullName());
 
             userProfileRepository.save(userProfile);
 
@@ -99,7 +99,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
 
         if (userProfileDto.getFullName() != null) {
-            existingProfile.setFullName(userProfileDto.getFullName());
+            existingProfile.setFullname(userProfileDto.getFullName());
         }
 
         userProfileRepository.save(existingProfile);

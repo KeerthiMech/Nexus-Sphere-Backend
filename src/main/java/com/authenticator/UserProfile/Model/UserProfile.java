@@ -25,8 +25,8 @@ public class UserProfile {
     @Column(name ="username")
     private String username;
 
-    @Column(name ="fullName")
-    private String fullName;
+    @Column(name ="fullname")
+    private String fullname;
 
     @Column(name ="bio", length = 500)
     private String bio;

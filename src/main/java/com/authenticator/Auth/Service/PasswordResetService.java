@@ -14,6 +14,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -75,7 +76,7 @@ public class PasswordResetService {
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(token);
-        passwordResetToken.setUsers(user);
+        passwordResetToken.setUser_id(user.getUserId());
         passwordResetToken.setExpiryTime(LocalDateTime.now().plusMinutes(expiryMinutes));
         passwordResetToken.setUsed(false);
 
@@ -88,46 +89,38 @@ public class PasswordResetService {
 
     @Transactional
     public void resetpasswordservice(String token, String newPassword) {
-        // validate inputs
-        if (token == null || token.trim().isEmpty()) {
+
+        if (!StringUtils.hasText(token)) {
             throw new IllegalArgumentException("Reset token is required");
         }
-        if (newPassword == null || newPassword.trim().isEmpty()) {
+        if (!StringUtils.hasText(newPassword)) {
             throw new IllegalArgumentException("New password is required");
         }
 
-        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token)
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
                 .orElseThrow(() -> new EntityNotFoundException("Invalid password reset token"));
 
-        if (passwordResetToken.isUsed() || passwordResetToken.getExpiryTime().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Password reset token is either used or expired");
+        if (resetToken.isUsed()) {
+            throw new IllegalStateException("Reset token already used");
         }
 
-        // derive userId from token
-        String userId = null;
-        if (passwordResetToken.getUsers() != null && passwordResetToken.getUsers().getUserId() != null) {
-            userId = passwordResetToken.getUsers().getUserId();
-        } else {
+        if (resetToken.getExpiryTime().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Reset token expired");
+        }
+
+        String userId = resetToken.getUser_id();
+        if (!StringUtils.hasText(userId)) {
             throw new EntityNotFoundException("User associated with token not found");
         }
 
-        // encode new password and perform an update via JPQL to ensure a direct SQL update
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        try {
-            int updated = entityManager.createQuery("UPDATE Users u SET u.password = :pwd WHERE u.userId = :id")
-                    .setParameter("pwd", encodedPassword)
-                    .setParameter("id", userId)
-                    .executeUpdate();
+        Users user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-            if (updated == 0) {
-                throw new RuntimeException("Failed to update password for userId: " + userId);
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException("Database error while updating password for userId: " + userId, ex);
-        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
 
-        // mark token as used
-        passwordResetToken.setUsed(true);
-        passwordResetTokenRepository.save(passwordResetToken);
+        resetToken.setUsed(true);
+        passwordResetTokenRepository.save(resetToken);
     }
 }
+

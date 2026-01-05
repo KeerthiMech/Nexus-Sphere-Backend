@@ -21,10 +21,8 @@ public class PasswordResetToken {
     @Column(unique = true, nullable = false)
     private LocalDateTime expiryTime;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "userId", nullable = false, unique = true)
-    private Users users;
+    @Column(name ="user_id")
+    private String user_id;
 
 
     private boolean used;
