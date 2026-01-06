@@ -14,11 +14,8 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class UserProfile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "profileId", updatable = false, nullable = false)
-    private String profileId;
 
+    @Id
     @Column(name ="userId", unique = true, nullable = false)
     private String userId;
 

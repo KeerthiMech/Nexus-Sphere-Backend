@@ -23,7 +23,7 @@ public class Post {
 
     // foreign key referencing user_profiles.id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profileId", referencedColumnName = "profileId", nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private UserProfile userProfile;

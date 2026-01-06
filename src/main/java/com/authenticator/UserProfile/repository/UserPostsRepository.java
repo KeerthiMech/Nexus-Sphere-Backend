@@ -4,5 +4,5 @@ import com.authenticator.UserProfile.Model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserPostsRepository extends JpaRepository<Post, Integer> {
-     int countByUserProfile_ProfileId(String profileId);
+     int countByUserProfile_userId(String userid);
 }

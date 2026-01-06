@@ -27,7 +27,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         UserProfile profile = userProfileRepository.findByusername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String profileId = profile.getProfileId();
+        String userId = profile.getUserId();
 
         UserProfileDto dto = new UserProfileDto();
         dto.setUsername(profile.getUsername());
@@ -36,15 +36,15 @@ public class UserProfileServiceImpl implements UserProfileService {
         dto.setProfilePictureUrl(profile.getProfilePictureUrl());
 
         dto.setFollowersCount(
-                userFollowRepository.countByFollowId_FollowingId(profileId)
+                userFollowRepository.countByFollowId_FollowingId(userId)
         );
 
         dto.setFollowingCount(
-                userFollowRepository.countByFollowId_FollowerId(profileId)
+                userFollowRepository.countByFollowId_FollowerId(userId)
         );
 
         dto.setPostsCount(
-                userPostsRepository.countByUserProfile_ProfileId(profileId)
+                userPostsRepository.countByUserProfile_userId(userId)
         );
 
         return dto;
