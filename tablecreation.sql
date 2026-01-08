@@ -43,21 +43,6 @@ CREATE TABLE Profile_Service.user_profile (
 );
 
 
-
-
-CREATE TABLE Profile_Service.posts (
-    post_id VARCHAR(36) PRIMARY KEY,
-    profile_id VARCHAR(36) not null,
-    content TEXT NOT NULL,
-    imageUrl VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_posts_user
-        FOREIGN KEY (profile_id)
-        REFERENCES Profile_Service.user_profile(profile_id)
-        ON DELETE CASCADE
-);
-
 CREATE TABLE Profile_Service.follow (
     follower_id VARCHAR(36) NOT NULL,
     following_id VARCHAR(36) NOT NULL,
@@ -78,5 +63,87 @@ CREATE TABLE Profile_Service.follow (
     CONSTRAINT chk_no_self_follow
         CHECK (follower_id <> following_id)
 );
+
+CREATE TABLE Profile_Service.posts (
+    post_id VARCHAR(36) PRIMARY KEY,
+    profile_id VARCHAR(36) not null,
+    content TEXT NOT NULL,
+    imageUrl VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_posts_user
+        FOREIGN KEY (profile_id)
+        REFERENCES Profile_Service.user_profile(profile_id)
+        ON DELETE CASCADE
+);
+
+    CREATE TABLE Profile_Service.post_likes (
+    like_id VARCHAR(100) PRIMARY KEY,
+    post_id VARCHAR(36) NOT NULL,
+    user_id VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_likes_post
+        FOREIGN KEY (post_id)
+        REFERENCES Profile_Service.posts(post_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_likes_user
+        FOREIGN KEY (user_id)
+        REFERENCES Profile_Service.user_profile(user_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_post_user_like UNIQUE (post_id, user_id)
+);
+
+CREATE TABLE Profile_Service.post_comments (
+    comment_id VARCHAR(36) PRIMARY KEY,
+    post_id VARCHAR(36) NOT NULL,
+    user_id VARCHAR(50) NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_comments_post
+        FOREIGN KEY (post_id)
+        REFERENCES Profile_Service.posts(post_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_comments_user
+        FOREIGN KEY (user_id)
+        REFERENCES Profile_Service.user_profile(user_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Profile_Service.post_shares (
+    share_id VARCHAR(36) PRIMARY KEY,
+    post_id VARCHAR(36) not null,
+    user_id VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_shares_post
+        FOREIGN KEY (post_id)
+        REFERENCES Profile_Service.posts(post_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_shares_user
+        FOREIGN KEY (user_id)
+        REFERENCES Profile_Service.user_profile(user_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_post_user_share UNIQUE (post_id, user_id)
+);
+
+CREATE INDEX idx_posts_user_id
+ON Profile_Service.posts(user_id);
+
+CREATE INDEX idx_likes_post_id
+ON Profile_Service.post_likes(post_id);
+
+CREATE INDEX idx_comments_post_id
+ON Profile_Service.post_comments(post_id);
+
+CREATE INDEX idx_shares_post_id
+ON Profile_Service.post_shares(post_id);
+
 
 

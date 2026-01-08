@@ -1,5 +1,6 @@
 package com.authenticator.posts.repository;
 
+import com.authenticator.posts.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

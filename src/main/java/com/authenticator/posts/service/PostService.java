@@ -12,5 +12,8 @@ public interface PostService {
     void likePost(Long postId);
     void commentOnPost(Long postId, String comment);
     void sharePost(Long postId);
+    void unlikePost(Long postId, String userid);
+
+    void deleteComment(Long postId, Long commentId, String userid);
 }
 

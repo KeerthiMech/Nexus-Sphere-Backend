@@ -61,6 +61,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void unlikePost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setLikesCount(Math.max(0, post.getLikesCount() - 1));
+        postRepository.save(post);
+    }
+
+    @Override
     public void commentOnPost(Long postId, String comment) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
