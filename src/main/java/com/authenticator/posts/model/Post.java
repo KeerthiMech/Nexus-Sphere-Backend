@@ -1,6 +1,6 @@
-package com.authenticator.UserProfile.Model;
+package com.authenticator.posts.model;
 
-import com.authenticator.Auth.Model.Users;
+import com.authenticator.UserProfile.Model.UserProfile;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -4,7 +4,7 @@ import com.authenticator.Auth.repository.UserRepository;
 import com.authenticator.UserProfile.Model.UserProfile;
 import com.authenticator.UserProfile.dto.UserProfileDto;
 import com.authenticator.Follow.repository.UserFollowRepository;
-import com.authenticator.UserProfile.repository.UserPostsRepository;
+import com.authenticator.posts.repository.UserPostsRepository;
 import com.authenticator.UserProfile.repository.UserProfileRepository;
 import com.authenticator.UserProfile.service.UserProfileService;
 import lombok.RequiredArgsConstructor;

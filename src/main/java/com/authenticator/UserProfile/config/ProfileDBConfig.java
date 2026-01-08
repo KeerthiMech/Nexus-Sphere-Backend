@@ -22,11 +22,11 @@ import java.util.Map;
 @Configuration
 @EnableJpaRepositories(
         basePackages = {"com.authenticator.UserProfile.repository",
-        "com.authenticator.Follow.repository"},   // repositories for profile schema
+        "com.authenticator.Follow.repository","com.authenticator.posts.repository"},   // repositories for profile schema
         entityManagerFactoryRef = "profileEntityManagerFactory",
         transactionManagerRef = "profileTransactionManager"
 )
-@EntityScan(basePackages = {"com.authenticator.UserProfile.Model","com.authenticator.Follow.model"}) // entities for profile schema
+@EntityScan(basePackages = {"com.authenticator.UserProfile.Model","com.authenticator.Follow.model","com.authenticator.posts.model"}) // entities for profile schema
 public class ProfileDBConfig {
     @Primary
     @Bean
@@ -47,7 +47,7 @@ public class ProfileDBConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.authenticator.UserProfile.Model","com.authenticator.Follow.model") // scan entities
+                .packages("com.authenticator.UserProfile.Model","com.authenticator.Follow.model","com.authenticator.posts.model") // scan entities
                 .persistenceUnit("profilePU")
                 .properties(properties)
                 .build();
