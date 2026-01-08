@@ -3,12 +3,11 @@ package com.authenticator.UserProfile.service.impl;
 import com.authenticator.Auth.repository.UserRepository;
 import com.authenticator.UserProfile.Model.UserProfile;
 import com.authenticator.UserProfile.dto.UserProfileDto;
-import com.authenticator.UserProfile.repository.UserFollowRepository;
+import com.authenticator.Follow.repository.UserFollowRepository;
 import com.authenticator.UserProfile.repository.UserPostsRepository;
 import com.authenticator.UserProfile.repository.UserProfileRepository;
 import com.authenticator.UserProfile.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,16 +23,33 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto getprofile(String username) {
-        UserProfile profile = userProfileRepository.findByusername(username).orElseThrow(() -> new RuntimeException("User not found"));
-        String profileId = profile.getProfileId();
-        UserProfileDto userProfileDto = new UserProfileDto();
-        userProfileDto.setUsername(username);
-        userProfileDto.setFollowersCount(userFollowRepository.countByFollowId_FollowerId(profileId));
-        userProfileDto.setFollowingCount(userFollowRepository.countByFollowId_FollowingId(profileId));
-        userProfileDto.setPostsCount(userPostsRepository.countByUserProfile_ProfileId(profileId));
 
-        return userProfileDto;
+        UserProfile profile = userProfileRepository.findByusername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String profileId = profile.getProfileId();
+
+        UserProfileDto dto = new UserProfileDto();
+        dto.setUsername(profile.getUsername());
+        dto.setBio(profile.getBio());
+        dto.setFullName(profile.getFullName());
+        dto.setProfilePictureUrl(profile.getProfilePictureUrl());
+
+        dto.setFollowersCount(
+                userFollowRepository.countByFollowId_FollowingId(profileId)
+        );
+
+        dto.setFollowingCount(
+                userFollowRepository.countByFollowId_FollowerId(profileId)
+        );
+
+        dto.setPostsCount(
+                userPostsRepository.countByUserProfile_ProfileId(profileId)
+        );
+
+        return dto;
     }
+
 
     @Override
     public String createProfile(String userid, UserProfileDto userProfileDto) {

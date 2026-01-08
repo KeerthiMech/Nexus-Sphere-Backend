@@ -1,26 +1,27 @@
-# Maven
-target/
-
-# Environment & secrets
+# Environment files
 .env
 .env.*
-application-*.yml
+
+# Spring Boot config
 application-*.properties
+application-*.yml
+
+# Secrets / keys
+*.key
+*.pem
 
 # Logs
-*.log
 logs/
+*.log
 
-# IDEs
-.idea
-.vscode
+# Build files
+/target/
+build/
+
+# IDE
+.idea/
+.vscode/
 *.iml
-*.ipr
-*.iws
-.classpath
-.project
-.settings
-.factorypath
 
 # OS
 .DS_Store

@@ -1,4 +1,4 @@
-package com.authenticator.UserProfile.Model;
+package com.authenticator.Follow.model;
 
 
 import jakarta.persistence.Column;
