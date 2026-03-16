@@ -3,17 +3,15 @@ package com.authenticator.posts.repository;
 import com.authenticator.posts.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface UserPostsRepository extends JpaRepository<Post, Integer> {
-    @Query("SELECT COUNT(p) FROM Post p WHERE p.postId = :postId")
-    int getPostCountByPostId(String postId);
-
-    @Query("SELECT SUM(p.likeCount) FROM Post p WHERE p.postId = :postId")
-    int getLikeCountByPostId(String postId);
-
-    @Query("SELECT SUM(p.commentCount) FROM Post p WHERE p.postId = :postId")
-    int getCommentCountByPostId(String postId);
-
-    @Query("SELECT SUM(p.shareCount) FROM Post p WHERE p.postId = :postId")
-    int getShareCountByPostId(String postId);
+public interface UserPostsRepository extends JpaRepository<Post, String> {
+    int countByUserProfile_userId(String userId);
+    @Query("""
+SELECT COUNT(l)
+FROM Like l
+JOIN Post p ON l.postId = p.postId
+WHERE p.postId = :postId
+""")
+    long countLikesWithPost(@Param("postId") Long postId);
 }

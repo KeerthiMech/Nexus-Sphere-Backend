@@ -2,6 +2,7 @@ package com.authenticator.posts.controller;
 
 import com.authenticator.Security.CustomPrinciple;
 import com.authenticator.posts.dto.PostDto;
+import com.authenticator.posts.dto.PostResponse;
 import com.authenticator.posts.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,66 +19,72 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<PostResponse>> getPostsByUser(@PathVariable String userId) {
         return ResponseEntity.ok(postService.getPostsByUser(userId));
+    }
+
+    // New: return a single post by postId
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<PostResponse> getPostById(@PathVariable String postId) {
+        return ResponseEntity.ok(postService.getPostbyId(postId));
     }
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,
                                               @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postDto.setUserId(Long.valueOf(customPrinciple.getUserid()));
+        postDto.setUserId(postDto.getUserId());
         return ResponseEntity.ok(postService.createPost(postDto));
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<PostDto> editPost(@PathVariable Long postId,
+    public ResponseEntity<PostDto> editPost(@PathVariable String postId,
                                             @RequestBody PostDto postDto,
                                             @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postDto.setUserId(Long.valueOf(customPrinciple.getUserid()));
+        postDto.setUserId(postDto.getUserId());
         return ResponseEntity.ok(postService.editPost(postId, postDto));
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId,
+    public ResponseEntity<Void> deletePost(@PathVariable String postId,
                                            @AuthenticationPrincipal CustomPrinciple customPrinciple) {
         postService.deletePost(postId, customPrinciple.getUserid());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{postId}/like")
-    public ResponseEntity<Void> likePost(@PathVariable Long postId,
+    public ResponseEntity<Void> likePost(@PathVariable String postId,
                                          @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postService.likePost(postId, customPrinciple.getUserid());
+        postService.likePost(customPrinciple.getUserid(), postId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{postId}/unlike")
-    public ResponseEntity<Void> unlikePost(@PathVariable Long postId,
+    public ResponseEntity<Void> unlikePost(@PathVariable String postId,
                                            @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postService.unlikePost(postId, customPrinciple.getUserid());
+        postService.unlikePost(customPrinciple.getUserid(), postId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{postId}/comment")
-    public ResponseEntity<Void> commentOnPost(@PathVariable Long postId,
+    public ResponseEntity<Void> commentOnPost(@PathVariable String postId,
                                               @RequestBody String comment,
                                               @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postService.commentOnPost(postId, comment, customPrinciple.getUserid());
+        postService.commentOnPost(customPrinciple.getUserid(),postId, comment);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{postId}/comment/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
-                                              @PathVariable Long commentId,
+    public ResponseEntity<Void> deleteComment(@PathVariable String postId,
+                                              @PathVariable String commentId,
                                               @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postService.deleteComment(postId, commentId, customPrinciple.getUserid());
+        postService.deleteComment( customPrinciple.getUserid(),postId, commentId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{postId}/share")
-    public ResponseEntity<Void> sharePost(@PathVariable Long postId,
+    @PostMapping("/{postId}/{toUserId}}/share")
+    public ResponseEntity<Void> sharePost(@PathVariable String postId,@PathVariable String toUserId,
                                           @AuthenticationPrincipal CustomPrinciple customPrinciple) {
-        postService.sharePost(postId, customPrinciple.getUserid());
+        postService.sharePost(customPrinciple.getUserid(),postId,toUserId);
         return ResponseEntity.ok().build();
     }
 }

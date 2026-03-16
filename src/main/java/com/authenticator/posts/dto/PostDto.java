@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDto {
-    private Long userId;
+    private String userId;
     private String content;
     private int likesCount;
     private int commentsCount;
