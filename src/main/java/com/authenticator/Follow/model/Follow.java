@@ -19,12 +19,12 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("followerId")
-    @JoinColumn(name ="follower_id",nullable = false)
+    @JoinColumn(name ="follower_id",referencedColumnName = "userId",nullable = false)
     private UserProfile follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("followingId")
-    @JoinColumn(name ="following_id", nullable = false)
+    @JoinColumn(name ="following_id",referencedColumnName = "userId", nullable = false)
     private UserProfile following;
 
 }

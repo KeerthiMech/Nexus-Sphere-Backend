@@ -1,8 +1,11 @@
-package com.authenticator.UserProfile.Model;
+package com.authenticator.posts.model;
 
-import com.authenticator.Auth.Model.Users;
+import com.authenticator.UserProfile.Model.UserProfile;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "posts", schema ="Profile_Service")
@@ -13,19 +16,18 @@ import lombok.*;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "post_id")
     private String postId;
-
     private String title;
     private String content;
     private String imageUrl;
 
-    // foreign key referencing user_profiles.id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profileId", referencedColumnName = "profileId", nullable = false)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    @JoinColumn(name ="userId",referencedColumnName = "userId", insertable = false, updatable = false)
     private UserProfile userProfile;
+
+    @CreationTimestamp
+    private Instant createdAt;
 }
 

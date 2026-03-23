@@ -4,7 +4,7 @@ import com.authenticator.Auth.repository.UserRepository;
 import com.authenticator.UserProfile.Model.UserProfile;
 import com.authenticator.UserProfile.dto.UserProfileDto;
 import com.authenticator.Follow.repository.UserFollowRepository;
-import com.authenticator.UserProfile.repository.UserPostsRepository;
+import com.authenticator.posts.repository.UserPostsRepository;
 import com.authenticator.UserProfile.repository.UserProfileRepository;
 import com.authenticator.UserProfile.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
@@ -27,24 +27,24 @@ public class UserProfileServiceImpl implements UserProfileService {
         UserProfile profile = userProfileRepository.findByusername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String profileId = profile.getProfileId();
+        String userId = profile.getUserId();
 
         UserProfileDto dto = new UserProfileDto();
         dto.setUsername(profile.getUsername());
         dto.setBio(profile.getBio());
-        dto.setFullName(profile.getFullName());
+        dto.setFullName(profile.getFullname());
         dto.setProfilePictureUrl(profile.getProfilePictureUrl());
 
         dto.setFollowersCount(
-                userFollowRepository.countByFollowId_FollowingId(profileId)
+                userFollowRepository.countByFollowId_FollowingId(userId)
         );
 
         dto.setFollowingCount(
-                userFollowRepository.countByFollowId_FollowerId(profileId)
+                userFollowRepository.countByFollowId_FollowerId(userId)
         );
 
         dto.setPostsCount(
-                userPostsRepository.countByUserProfile_ProfileId(profileId)
+                userPostsRepository.countPostsByPerUserId(userId)
         );
 
         return dto;
@@ -63,7 +63,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             userProfile.setUsername(userProfileDto.getUsername());
             userProfile.setBio(userProfileDto.getBio());
             userProfile.setProfilePictureUrl(userProfileDto.getProfilePictureUrl());
-            userProfile.setFullName(userProfileDto.getFullName());
+            userProfile.setFullname(userProfileDto.getFullName());
 
             userProfileRepository.save(userProfile);
 
@@ -99,7 +99,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
 
         if (userProfileDto.getFullName() != null) {
-            existingProfile.setFullName(userProfileDto.getFullName());
+            existingProfile.setFullname(userProfileDto.getFullName());
         }
 
         userProfileRepository.save(existingProfile);

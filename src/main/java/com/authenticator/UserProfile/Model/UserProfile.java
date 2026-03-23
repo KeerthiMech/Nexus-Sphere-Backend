@@ -1,6 +1,7 @@
 package com.authenticator.UserProfile.Model;
 
 import com.authenticator.Follow.model.Follow;
+import com.authenticator.posts.model.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,19 +15,16 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class UserProfile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "profileId", updatable = false, nullable = false)
-    private String profileId;
 
+    @Id
     @Column(name ="userId", unique = true, nullable = false)
     private String userId;
 
     @Column(name ="username")
     private String username;
 
-    @Column(name ="fullName")
-    private String fullName;
+    @Column(name ="fullname")
+    private String fullname;
 
     @Column(name ="bio", length = 500)
     private String bio;
