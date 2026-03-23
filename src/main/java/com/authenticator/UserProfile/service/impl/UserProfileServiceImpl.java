@@ -44,7 +44,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         );
 
         dto.setPostsCount(
-                userPostsRepository.countByUserProfile_userId(userId)
+                userPostsRepository.countPostsByPerUserId(userId)
         );
 
         return dto;

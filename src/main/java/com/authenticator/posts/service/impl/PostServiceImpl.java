@@ -4,6 +4,7 @@ import com.authenticator.UserProfile.repository.UserProfileRepository;
 import com.authenticator.posts.dto.PostDto;
 import com.authenticator.posts.dto.PostResponse;
 import com.authenticator.posts.model.Post;
+import com.authenticator.posts.repository.PostCountsProjection;
 import com.authenticator.posts.repository.UserPostsRepository;
 import com.authenticator.posts.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -23,26 +24,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse getPostbyId(String postId) {
-        // Fetch the post from the repository
+        PostCountsProjection counts = userPostsRepository.findCountsForPost(postId);
         Post post = userPostsRepository.findById(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
         PostResponse response = new PostResponse();
         response.setPostId(post.getPostId());
-        response.setUserId(post.getUserId());
+        response.setUserId(post.getUserProfile().getUserId());
         response.setContent(post.getContent());
         response.setImageUrl(post.getImageUrl());
-        response.setLikeCount(post.getLikesCount());
-        response.setCommentCount(post.getCommentsCount());
-        response.setShareCount(post.getSharesCount());
+        response.setLikeCount(counts.getLikes());
+        response.setCommentCount(counts.getComments());
+        response.setShareCount(counts.getShares());
         response.setCreatedAt(post.getCreatedAt());
 
         return response;
-    }
-
-    private PostResponse mapToPostResponse(Post post) {
-            PostResponse response = new PostResponse(post);
-            response.setPostId(post.getPostId());
-
     }
 
     @Override

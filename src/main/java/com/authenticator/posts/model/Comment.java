@@ -22,7 +22,7 @@ public class Comment {
     private Long commentId;
 
     @Column(nullable = false)
-    private Long postId;
+    private String postId;
 
     @Column(nullable = false)
     private String userId;

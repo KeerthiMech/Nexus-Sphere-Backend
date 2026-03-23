@@ -25,7 +25,7 @@ public class Share {
     private Long shareId;
 
     @Column(nullable = false)
-    private Long postId;
+    private String postId;
 
     @Column(nullable = false)
     private String userId;

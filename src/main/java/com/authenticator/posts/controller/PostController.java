@@ -81,7 +81,7 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{postId}/{toUserId}}/share")
+    @PostMapping("/{postId}/{toUserId}/share")
     public ResponseEntity<Void> sharePost(@PathVariable String postId,@PathVariable String toUserId,
                                           @AuthenticationPrincipal CustomPrinciple customPrinciple) {
         postService.sharePost(customPrinciple.getUserid(),postId,toUserId);
