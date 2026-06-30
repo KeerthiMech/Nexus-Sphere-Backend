@@ -11,15 +11,16 @@ import java.time.Instant;
 
 
 @Entity
-@Table(name = "post_comments", schema = "User_Services")
+@Table(name = "post_comments", schema = "Profile_Service")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "comment_id")
+    private String commentId;
 
     @Column(nullable = false)
     private String postId;

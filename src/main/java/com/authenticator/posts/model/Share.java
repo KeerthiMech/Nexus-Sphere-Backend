@@ -12,7 +12,7 @@ import java.time.Instant;
 @Entity
 @Table(
         name = "post_shares",
-        schema = "User_Services",
+        schema = "Profile_Service",
         uniqueConstraints = @UniqueConstraint(columnNames = {"post_id", "user_id"})
 )
 @Getter @Setter
@@ -21,8 +21,9 @@ import java.time.Instant;
 public class Share {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long shareId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "share_id")
+    private String shareId;
 
     @Column(nullable = false)
     private String postId;

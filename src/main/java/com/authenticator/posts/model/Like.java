@@ -12,7 +12,7 @@ import java.time.Instant;
 @Entity
 @Table(
         name = "post_likes",
-        schema = "User_Services",
+        schema = "Profile_Service",
         uniqueConstraints = @UniqueConstraint(columnNames = {"post_id", "user_id"})
 )
 @Getter
@@ -22,8 +22,9 @@ import java.time.Instant;
 public class Like {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "like_id")
+    private String likeId;
 
     @Column(nullable = false)
     private String postId;

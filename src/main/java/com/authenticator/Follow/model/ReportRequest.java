@@ -1,21 +1,20 @@
 package com.authenticator.Follow.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * DTO for filing a report against a user
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReportRequest {
-    private Long reporterUserId;
-    private Long reportedUserId;
-    private String reason;
-
-    // ...existing code...
-
-    public ReportRequest() {}
-
-    public Long getReporterUserId() { return reporterUserId; }
-    public void setReporterUserId(Long reporterUserId) { this.reporterUserId = reporterUserId; }
-
-    public Long getReportedUserId() { return reportedUserId; }
-    public void setReportedUserId(Long reportedUserId) { this.reportedUserId = reportedUserId; }
-
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+    
+    private String authenticatedUserId;      // The user filing the report
+    private String reportedUsername;          // Username of the user being reported
+    private String reportReason;              // Category/reason for the report
+    private String description;               // Detailed description of the issue
 }
 

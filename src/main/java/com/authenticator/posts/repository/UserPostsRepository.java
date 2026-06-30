@@ -6,13 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserPostsRepository extends JpaRepository<Post, String> {
-    @Query(value = "SELECT COUNT(*) FROM Profile_Service.posts WHERE userId = :userId", nativeQuery = true)
-    int countPostsByPerUserId(@Param("userId") String userId);
+    @Query(value = "SELECT COUNT(*) FROM profile_service.posts WHERE profile_id = :profileId", nativeQuery = true)
+    int countPostsByPerProfileId(@Param("profileId") String userId);
+    @Query(value = "SELECT COUNT(p.post_id) FROM profile_service.posts p " +
+            "INNER JOIN profile_service.user_profile up ON p.profile_id = up.profile_id " +
+            "WHERE up.user_id = :userId", nativeQuery = true)
+    int countPostsByUserId(@Param("userId") String userId);
     @Query(value = ""
             + "SELECT "
-            + "  (SELECT COUNT(*) FROM User_Services.post_likes    WHERE post_id = :postId) AS likes, "
-            + "  (SELECT COUNT(*) FROM User_Services.post_comments WHERE post_id = :postId) AS comments, "
-            + "  (SELECT COUNT(*) FROM User_Services.post_shares   WHERE post_id = :postId) AS shares",
+            + "  (SELECT COUNT(*) FROM profile_service.post_likes    WHERE post_id = :postId) AS likes, "
+            + "  (SELECT COUNT(*) FROM profile_service.post_comments WHERE post_id = :postId) AS comments, "
+            + "  (SELECT COUNT(*) FROM profile_service.post_shares   WHERE post_id = :postId) AS shares",
             nativeQuery = true)
     PostCountsProjection findCountsForPost(@Param("postId") String postId);
 }

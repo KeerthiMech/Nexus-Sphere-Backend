@@ -28,6 +28,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String userId = profile.getUserId();
+        String profileUserId = profile.getProfileId();
 
         UserProfileDto dto = new UserProfileDto();
         dto.setUsername(profile.getUsername());
@@ -44,7 +45,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         );
 
         dto.setPostsCount(
-                userPostsRepository.countPostsByPerUserId(userId)
+                userPostsRepository.countPostsByPerProfileId(profileUserId)
         );
 
         return dto;
