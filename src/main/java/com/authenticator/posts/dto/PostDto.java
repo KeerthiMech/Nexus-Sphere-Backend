@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostDto {
     private String userId;
+    private String title;
     private String content;
     private int likesCount;
     private int commentsCount;

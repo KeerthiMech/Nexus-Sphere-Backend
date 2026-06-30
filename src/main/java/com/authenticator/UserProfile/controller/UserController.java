@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserProfileService userProfileService;
 
-    // Constructor injection with @Qualifier
     public UserController(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
     }

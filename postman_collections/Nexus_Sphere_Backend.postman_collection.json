@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "Nexus Sphere Backend - Postman Collection",
+    "description": "Postman collection for all API endpoints in the Nexus Sphere Backend (local testing)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "JWT",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePass123!\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/signup"
+            },
+            "description": "Create a new user account. Public endpoint."
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"john_doe\",\n  \"password\": \"SecurePass123!\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{BASE_URL}}/auth/login" },
+            "description": "Login with username or email. Copy token value into {{JWT}}."
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"identifier\": \"john@example.com\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/auth/forgot-password" },
+            "description": "Trigger password reset email if account exists. Public endpoint."
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"token\": \"reset_token_from_email\",\n  \"newPassword\": \"NewSecurePass123!\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/auth/reset-password" },
+            "description": "Reset password with token from email. Public endpoint."
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Create Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{JWT}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"john_doe\",\n  \"fullName\": \"John Doe\",\n  \"bio\": \"Software developer\",\n  \"profilePictureUrl\": \"https://example.com/avatar.jpg\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/user/auth/createProfile" },
+            "description": "Create a user profile for the authenticated user. JWT required."
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"bio\": \"Updated bio here\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/user/auth/updateProfile" },
+            "description": "Partial update of the authenticated user's profile. JWT required."
+          }
+        },
+        {
+          "name": "Get Profile by Username",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{BASE_URL}}/user/profile/:username", "variable": [ { "key": "username", "value": "john_doe" } ] },
+            "description": "Public endpoint. Replace :username with the target username."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Get Posts By User",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/user/:userId", "variable": [ { "key": "userId", "value": "user-uuid" } ] },
+            "description": "Get all posts for a given userId. JWT required."
+          }
+        },
+        {
+          "name": "Get Post By Id",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/post/:postId", "variable": [ { "key": "postId", "value": "post-uuid" } ] },
+            "description": "Get detailed info for a single post. JWT required."
+          }
+        },
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": \"user-uuid\",\n  \"title\": \"My First Post\",\n  \"content\": \"This is my post content.\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/posts" },
+            "description": "Create a new post. JWT required. userId is normally taken from token - include for clarity."
+          }
+        },
+        {
+          "name": "Edit Post",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": \"user-uuid\",\n  \"title\": \"Updated Title\",\n  \"content\": \"Updated content\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/posts/:postId", "variable": [ { "key": "postId", "value": "post-uuid" } ] },
+            "description": "Edit an existing post. Only owner can edit. JWT required."
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/:postId", "variable": [ { "key": "postId", "value": "post-uuid" } ] },
+            "description": "Delete a post (owner only). JWT required."
+          }
+        },
+        {
+          "name": "Like Post",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/:postId/like", "variable": [ { "key": "postId", "value": "post-uuid" } ] },
+            "description": "Like a post. JWT required. No body needed."
+          }
+        },
+        {
+          "name": "Unlike Post",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/:postId/unlike", "variable": [ { "key": "postId", "value": "post-uuid" } ] },
+            "description": "Unlike a post. JWT required."
+          }
+        },
+        {
+          "name": "Comment On Post (raw text)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "text/plain" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "Great post! Very helpful.", "options": { "raw": { "language": "text" } } },
+            "url": { "raw": "{{BASE_URL}}/posts/:postId/comment", "variable": [ { "key": "postId", "value": "post-uuid" } ] },
+            "description": "Add a comment to a post. Controller expects a raw string in the request body. JWT required."
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/:postId/comment/:commentId", "variable": [ { "key": "postId", "value": "post-uuid" }, { "key": "commentId", "value": "comment-uuid" } ] },
+            "description": "Delete a comment by id. Only comment author or post owner can delete. JWT required."
+          }
+        },
+        {
+          "name": "Share Post",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "url": { "raw": "{{BASE_URL}}/posts/:postId/:toUserId/share", "variable": [ { "key": "postId", "value": "post-uuid" }, { "key": "toUserId", "value": "target-user-uuid" } ] },
+            "description": "Share a post to another user. JWT required."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Follow",
+      "item": [
+        {
+          "name": "Follow User",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"authenticatedUserId\": \"user-uuid\",\n  \"targetUsername\": \"target_user\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/f2f/follow" },
+            "description": "Follow a user. JWT required. Controller takes authenticatedUserId from token but body can include it."
+          }
+        },
+        {
+          "name": "Unfollow User",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"authenticatedUserId\": \"user-uuid\",\n  \"targetUsername\": \"target_user\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/f2f/unfollow" },
+            "description": "Unfollow a user. JWT required."
+          }
+        },
+        {
+          "name": "Remove Follower",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"authenticatedUserId\": \"user-uuid\",\n  \"targetUsername\": \"follower_username\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/f2f/remove-follower" },
+            "description": "Remove a follower from your followers list. JWT required."
+          }
+        },
+        {
+          "name": "Block Follower",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"authenticatedUserId\": \"user-uuid\",\n  \"targetUsername\": \"user_to_block\",\n  \"reason\": \"Harassment\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/f2f/block-follower" },
+            "description": "Block a user. Include authenticatedUserId in body (service expects it). JWT required."
+          }
+        },
+        {
+          "name": "Report Follower",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{JWT}}" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"authenticatedUserId\": \"user-uuid\",\n  \"reportedUsername\": \"user_to_report\",\n  \"reportReason\": \"HARASSMENT\",\n  \"description\": \"Detailed description here\"\n}\n", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{BASE_URL}}/f2f/report-follower" },
+            "description": "Report a user. Include authenticatedUserId in body. JWT required."
+          }
+        }
+      ]
+    }
+  ]
+}
+

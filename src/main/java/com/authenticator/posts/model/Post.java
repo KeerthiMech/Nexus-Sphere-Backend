@@ -19,12 +19,17 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "post_id")
     private String postId;
+    
+    @Column(name = "profile_id", nullable = false)
+    private String profileId;
+    
     private String title;
     private String content;
+    @Column(name = "imageUrl")
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="userId",referencedColumnName = "userId", insertable = false, updatable = false)
+    @JoinColumn(name ="profile_id", referencedColumnName = "profile_id", insertable = false, updatable = false)
     private UserProfile userProfile;
 
     @CreationTimestamp
